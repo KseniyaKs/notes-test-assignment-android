@@ -8,4 +8,9 @@ class NoteDetailsFragment : ViewBindingFragment<FragmentNoteDetailsBinding>(
 ) {
 
 
+
+        viewBinding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
 }

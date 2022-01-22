@@ -31,10 +31,11 @@ class RootActivity : AppCompatActivity(), FragmentNavigator {
         val viewBinding = this.viewBinding ?: return
         supportFragmentManager
             .beginTransaction()
-            .replace(
+            .add(
                 viewBinding.container.id,
                 fragment
             )
+            .addToBackStack(fragment.toString())
             .commit()
     }
 
