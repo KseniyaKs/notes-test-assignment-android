@@ -1,6 +1,9 @@
 package com.notes.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.notes.databinding.ActivityRootBinding
@@ -16,13 +19,16 @@ class RootActivity : AppCompatActivity(), FragmentNavigator {
         val viewBinding = ActivityRootBinding.inflate(layoutInflater)
         this.viewBinding = viewBinding
         setContentView(viewBinding.root)
-        supportFragmentManager
-            .beginTransaction()
-            .add(
-                viewBinding.container.id,
-                NoteListFragment()
-            )
-            .commit()
+
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(
+                    viewBinding.container.id,
+                    NoteListFragment()
+                )
+                .commit()
+        }
     }
 
     override fun navigateTo(
@@ -42,9 +48,37 @@ class RootActivity : AppCompatActivity(), FragmentNavigator {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
+            val noteListFragment = supportFragmentManager.fragments.find {
+                it is NoteListFragment
+            } as NoteListFragment
+            noteListFragment.refreshList()
+            closeKeyboard()
+            super.onBackPressed()
         } else {
             super.onBackPressed()
         }
     }
+//
+    private fun closeKeyboard() {
+        // this will give us the view
+        // which is currently focus
+        // in this layout
+        val view: View? = this.currentFocus
 
+        // if nothing is currently
+        // focus then this will protect
+        // the app from crash
+        if (view != null) {
+
+            // now assign the system
+            // service to InputMethodManager
+            val manager: InputMethodManager = getSystemService(
+                Context.INPUT_METHOD_SERVICE
+            ) as InputMethodManager
+            manager
+                .hideSoftInputFromWindow(
+                    view.getWindowToken(), 0
+                )
+        }
+    }
 }

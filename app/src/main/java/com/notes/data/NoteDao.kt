@@ -1,16 +1,23 @@
 package com.notes.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface NoteDao {
 
     @Query("SELECT * FROM notes")
-    fun getAll(): List<NoteDbo>
+    suspend fun getAll(): List<NoteDbo>
 
     @Insert
-    fun insertAll(vararg notes: NoteDbo)
+    suspend fun insertAll(vararg notes: NoteDbo)
+
+    @Update
+    suspend fun update(notes: NoteDbo)
+
+    @Query("DELETE FROM notes WHERE id = :id")
+    suspend fun deleteById (id: Long)
+
+    @Delete
+    suspend fun delete(notes: NoteDbo)
 
 }

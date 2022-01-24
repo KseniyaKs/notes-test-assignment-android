@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.notes.data.NoteDatabase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.Serializable
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class NoteListViewModel @Inject constructor(
@@ -19,17 +20,12 @@ class NoteListViewModel @Inject constructor(
     private val _navigateToNoteCreation = MutableLiveData<Unit?>()
     val navigateToNoteCreation: LiveData<Unit?> = _navigateToNoteCreation
 
+    private val _navigateToNoteChange = MutableLiveData<NoteListItem>()
+    val navigateToNoteChange: LiveData<NoteListItem> = _navigateToNoteChange
+
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            _notes.postValue(
-                noteDatabase.noteDao().getAll().map {
-                    NoteListItem(
-                        id = it.id,
-                        title = it.title,
-                        content = it.content,
-                    )
-                }
-            )
+        viewModelScope.launch{
+            getAllItemList()
         }
     }
 
@@ -37,10 +33,37 @@ class NoteListViewModel @Inject constructor(
         _navigateToNoteCreation.postValue(Unit)
     }
 
+    fun onChangeNoteClick(noteListItem: NoteListItem){
+        _navigateToNoteChange.postValue(noteListItem)
+    }
+
+    fun deleteNote(noteListItem: NoteListItem){
+        viewModelScope.launch {
+            noteDatabase.noteDao().deleteById(noteListItem.id)
+            getAllItemList()
+        }
+    }
+
+    suspend fun getAllItemList(){
+        _notes.postValue(
+            noteDatabase.noteDao().getAll()
+                .sortedBy { it.modifiedAt }
+                .reversed()
+                .map {
+                NoteListItem(
+                    id = it.id,
+                    title = it.title,
+                    content = it.content,
+                    createdAt = it.createdAt
+                )
+            }
+        )
+    }
 }
 
-data class NoteListItem(
+data class NoteListItem (
     val id: Long,
     val title: String,
     val content: String,
-)
+    val createdAt: LocalDateTime
+) : Serializable
