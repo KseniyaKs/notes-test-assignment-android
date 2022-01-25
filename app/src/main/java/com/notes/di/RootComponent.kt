@@ -1,7 +1,7 @@
 package com.notes.di
 
 import com.notes.ui.change.NoteChangeViewModel
-import com.notes.ui.details.NoteCreateViewModel
+import com.notes.ui.create.NoteCreateViewModel
 import com.notes.ui.list.NoteListViewModel
 import dagger.Component
 

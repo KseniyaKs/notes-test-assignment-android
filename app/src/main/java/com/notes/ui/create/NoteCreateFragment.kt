@@ -1,4 +1,4 @@
-package com.notes.ui.details
+package com.notes.ui.create
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback

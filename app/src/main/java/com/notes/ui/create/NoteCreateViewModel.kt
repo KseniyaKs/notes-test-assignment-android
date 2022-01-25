@@ -1,10 +1,9 @@
-package com.notes.ui.details
+package com.notes.ui.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.notes.data.NoteDatabase
 import com.notes.data.NoteDbo
-import com.notes.ui.list.NoteListItem
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
