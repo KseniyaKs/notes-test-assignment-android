@@ -35,6 +35,7 @@ class NoteListFragment : ViewBindingFragment<FragmentNoteListBinding>(
             longClick = object : OnItemClickListener {
                 override fun onItemClick(noteListItem: NoteListItem) {
                     viewModel.deleteNote(noteListItem)
+
                     Toast.makeText(context, "DELETE NOTE", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -46,12 +47,12 @@ class NoteListFragment : ViewBindingFragment<FragmentNoteListBinding>(
         super.onViewBindingCreated(viewBinding, savedInstanceState)
 
         viewBinding.list.adapter = recyclerViewAdapter
-        viewBinding.list.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                LinearLayout.VERTICAL
-            )
-        )
+//        viewBinding.list.addItemDecoration(
+//            DividerItemDecoration(
+//                requireContext(),
+//                LinearLayout.VERTICAL
+//            )
+//        )
         viewBinding.createNoteButton.setOnClickListener {
             viewModel.onCreateNoteClick()
         }
