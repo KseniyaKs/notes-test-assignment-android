@@ -60,9 +60,6 @@ class NoteChangeFragment : ViewBindingFragment<FragmentNoteChangeBinding>(
             ) {
                 viewModel.deleteEmptyNote(
                     id = noteListItem.id,
-                    title = binding.titleLabel.text.toString(),
-                    content = binding.contentLabel.text.toString(),
-                    createdAt = noteListItem.createdAt
                 )
                 Toast.makeText(context, "You can not save empty note.", Toast.LENGTH_SHORT)
                     .show()
