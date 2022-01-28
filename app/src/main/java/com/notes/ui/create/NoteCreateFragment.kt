@@ -12,8 +12,20 @@ class NoteCreateFragment : ViewBindingFragment<FragmentNoteCreateBinding>(
 
     private val viewModel by lazy { DependencyManager.noteDetailsViewModel() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onPause() {
+        super.onPause()
+        if (!isRemoving){
+            viewBinding?.let { binding ->
+                if (!binding.titleLabel.text.isNullOrEmpty() ||
+                    !binding.contentLabel.text.isNullOrEmpty()
+                ) {
+                    viewModel.createNote(
+                        title = binding.titleLabel.text.toString(),
+                        content = binding.contentLabel.text.toString()
+                    )
+                }
+            }
+        }
     }
 
     override fun onViewBindingCreated(
@@ -25,21 +37,5 @@ class NoteCreateFragment : ViewBindingFragment<FragmentNoteCreateBinding>(
         viewBinding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(this ,object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (!viewBinding.titleLabel.text.isNullOrEmpty() ||
-                    !viewBinding.contentLabel.text.isNullOrEmpty()
-                ) {
-                    viewModel.createNote(
-                        title = viewBinding.titleLabel.text.toString(),
-                        content = viewBinding.contentLabel.text.toString()
-                    )
-                }
-            }
-
-        })
-
-
     }
 }
