@@ -27,20 +27,9 @@ class NoteChangeViewModel @Inject constructor(private val noteDatabase: NoteData
         }
     }
 
-    fun deleteEmptyNote(id: Long, title: String, content: String, createdAt: LocalDateTime) {
-        val localDateTime = LocalDateTime.now()
-        if (title.isEmpty() &&
-            content.isEmpty()
-        )
-            viewModelScope.launch {
-                val note = NoteDbo(
-                    id = id,
-                    title = title,
-                    content = content,
-                    createdAt = createdAt,
-                    modifiedAt = localDateTime
-                )
-                noteDatabase.noteDao().delete(note)
-            }
+    fun deleteEmptyNote(id: Long) {
+        viewModelScope.launch {
+            noteDatabase.noteDao().deleteById(id)
+        }
     }
 }
