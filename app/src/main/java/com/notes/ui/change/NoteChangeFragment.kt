@@ -63,7 +63,9 @@ class NoteChangeFragment : ViewBindingFragment<FragmentNoteChangeBinding>(
                 )
                 Toast.makeText(context, "You can not save empty note.", Toast.LENGTH_SHORT)
                     .show()
-            } else {
+            } else if (binding.titleLabel.text.toString() != noteListItem.title ||
+                binding.contentLabel.text.toString() != noteListItem.content
+            ) {
                 viewModel.changeNote(
                     id = noteListItem.id,
                     title = binding.titleLabel.text.toString(),

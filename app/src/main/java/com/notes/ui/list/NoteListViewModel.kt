@@ -47,8 +47,7 @@ class NoteListViewModel @Inject constructor(
     suspend fun getAllItemList(){
         _notes.postValue(
             noteDatabase.noteDao().getAll()
-                .sortedBy { it.modifiedAt }
-                .reversed()
+                .sortedByDescending {it.modifiedAt}
                 .map {
                 NoteListItem(
                     id = it.id,

@@ -38,4 +38,6 @@ class NoteCreateFragment : ViewBindingFragment<FragmentNoteCreateBinding>(
             requireActivity().onBackPressed()
         }
     }
+
+
 }

@@ -102,8 +102,6 @@ class NoteListFragment : ViewBindingFragment<FragmentNoteListBinding>(
     ) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
         private val items = mutableListOf<NoteListItem>()
-//        private var oldItems = items
-
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -123,19 +121,13 @@ class NoteListFragment : ViewBindingFragment<FragmentNoteListBinding>(
 
         override fun getItemCount() = items.size
 
-        fun setItems(newItems: MutableList<NoteListItem>) {
+        fun setItems(newItems: List<NoteListItem>) {
             val diffUtil = MyDiffUtil(items, newItems)
             val diffUtilResults = DiffUtil.calculateDiff(diffUtil)
             this.items.clear()
             this.items.addAll(newItems)
             diffUtilResults.dispatchUpdatesTo(this)
         }
-
-//        fun setItems(items: List<NoteListItem>) {
-//            this.items.clear()
-//            this.items.addAll(items)
-//            notifyDataSetChanged()
-//        }
 
         private class ViewHolder(private val binding: ListItemNoteBinding) :
             RecyclerView.ViewHolder(binding.root) {
@@ -174,8 +166,8 @@ class NoteListFragment : ViewBindingFragment<FragmentNoteListBinding>(
 }
 
 class MyDiffUtil(
-    private val oldItems: MutableList<NoteListItem>,
-    private val newItems: MutableList<NoteListItem>
+    private val oldItems: List<NoteListItem>,
+    private val newItems: List<NoteListItem>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldItems.size
