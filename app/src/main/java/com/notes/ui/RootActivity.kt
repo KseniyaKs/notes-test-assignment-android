@@ -53,7 +53,6 @@ class RootActivity : AppCompatActivity(), FragmentNavigator {
             } as NoteListFragment
             noteListFragment.refreshList()
             closeKeyboard()
-            super.onBackPressed()
         } else {
             super.onBackPressed()
         }
